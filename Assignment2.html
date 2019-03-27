@@ -1,0 +1,238 @@
+<style>
+  .tg {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  .tg td {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 10px 5px;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+    word-break: normal;
+    border-color: black;
+  }
+
+  .tg th {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 10px 5px;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+    word-break: normal;
+    border-color: black;
+  }
+
+  .tg .tg-b9xc {
+    font-family: "Comic Sans MS", cursive, sans-serif !important;
+    ;
+    text-align: right;
+    vertical-align: top;
+  }
+
+  .tg .tg-cwv5 {
+    background-color: #ffffff;
+    text-align: right;
+    vertical-align: top;
+  }
+
+  .tg .tg-lqy6 {
+    text-align: right;
+    vertical-align: top;
+  }
+
+  .tg .tg-pykm {
+    font-weight: bold;
+    background-color: #9b9b9b;
+    text-align: center;
+    vertical-align: top;
+  }
+
+  .tg .tg-0lax {
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .tg .final {
+    font-weight: bold;
+    text-align: right;
+    vertical-align: top;
+  }
+
+  .fail {
+    font-weight: bold;
+    text-align: right;
+    vertical-align: top;
+    background-color: red;
+    color: white;
+  }
+
+  .gradeButton {
+    background-color: #121391;
+    font-family: Arial, sans-serif;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .gradeButton:hover {
+    background: #1C4C76;
+  }
+
+  .unSubmit {
+    background-color: #121391;
+    font-family: Arial, sans-serif;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    font-size: 16px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .null {
+    background-color: #fcf958;
+    color: black;
+    text-align: right;
+    vertical-align: top;
+  }
+
+  .csvText {
+    margin: 0 auto;
+    display: block;
+ }
+
+</style>
+
+<table id="grades" class="tg">
+  <tr>
+    <th class="tg-pykm">Name</th>
+    <th class="tg-pykm">ID</th>
+    <th class="tg-pykm">Assignment 1</th>
+    <th class="tg-pykm">Final Grade</th>
+  </tr>
+  <tr>
+    <td class="tg-0lax" contenteditable="true">-</td>
+    <td class="tg-0lax" contenteditable="true">-</td>
+    <td class="tg-lqy6" contenteditable="true" onblur="update()">-</td>
+    <td class="final"></td>
+  </tr>
+</table>
+<br>
+<button class="gradeButton" onclick="calculateGrades();">Calculate Final Grades</button>
+<br>
+<p id="unSubmit" class="unSubmit">
+  Number of unsubmitted assignments: 
+</p>
+<br>
+<textarea class="csvText" id="csv"></textarea>
+<br>
+<button class="gradeButton" onclick="csv();">Get CSV</button>
+
+<script>
+var check = 0;
+var tot = 0;
+var result = 0;
+var unSubmit = 0;
+var numRow = 1;
+var umCol = 1;
+
+document.addEventListener("DOMContentLoaded", function(e){
+ numRow = document.getElementById("grades").rows.length-1;
+  numCol = document.getElementById("grades").rows[0].cells.length-1;
+	console.log(numRow);
+	console.log(numCol);
+});
+
+//Runs when button is pressed
+function calculateGrades() {
+  for (var x = 1; x <= numRow; x++) {
+    document.getElementById("grades").rows[x].cells[numCol].innerHTML = 0;
+  }
+
+  allWork();
+  check = 1;
+}
+
+//Will only run if Calculate Grades button has been pressed
+function update() {
+  if (check == 1) {
+    allWork();
+  } else {
+    console.log("Button not clicked yet.")
+  }
+
+}
+
+function csv(){
+	var data = "";
+  
+  for (var i = 0; i <= numRow; i++) {
+    for (var j = 0; j <= numCol; j++) {
+    	data += document.getElementById("grades").rows[i].cells[j].innerHTML;
+      if(j < numCol & i < numRow){
+      	data += ",";
+      }
+      else{
+      	data += "\n";
+      }
+    }
+    
+  }
+  document.getElementById("csv").innerHTML = data;
+}
+
+function allWork() {
+  for (var i = 1; i <= numRow; i++) {
+    for (var j = 2; j < numCol; j++) {
+      if (document.getElementById("grades").rows[i].cells[j].innerText == "-") {
+        document.getElementById("grades").rows[i].cells[j].classList.replace("tg-lqy6", "null");
+        unSubmit++;
+      } 
+      else {
+        document.getElementById("grades").rows[i].cells[j].classList.replace("null", "tg-lqy6");
+        data = document.getElementById("grades").rows[i].cells[j].innerText;
+        data = parseInt(data);
+        
+        //Check if value in cell is an in or if <0 or >100
+        if(data === parseInt(data, 10) && data <= 100 && data >= 0){
+        	tot += parseInt(data);
+        }
+        else{
+        	//Replace invalid data with "-"
+        	document.getElementById("grades").rows[i].cells[j].innerHTML = "-";
+          console.log(tot);
+        }
+      }
+    }
+    result = Math.round(tot / (numCol-2));
+    if(result > 100){
+    	document.getElementById("grades").rows[i].cells[numCol].innerHTML = "100%";
+    }
+    else{
+    	document.getElementById("grades").rows[i].cells[numCol].innerHTML = result + "%";
+    }
+    if (result < 40) {
+      document.getElementById("grades").rows[i].cells[numCol].classList.replace("final", "fail");
+    }
+    if(result >= 40){
+    	document.getElementById("grades").rows[i].cells[numCol].classList.replace("fail", "final");
+    }
+    result = 0;
+    tot = 0;
+  }
+  document.getElementById("unSubmit").innerHTML = "Number of unsubmitted assignments: " + unSubmit;
+  unSubmit = 0;
+}
+
+</script>
