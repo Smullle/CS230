@@ -1,0 +1,98 @@
+<html>
+
+<body>
+
+<style>
+
+input[type=submit]{
+  background-color: #121391;
+  font-family: Arial, sans-serif;
+  border: none;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 auto;
+  display: block;
+}
+
+input[type=submit]:hover {
+  background: #1C4C76;
+}
+
+h2{
+  font-family: sans-serif;
+  color: white;
+  text-align-last: center;
+}
+
+form{
+  font-family: sans-serif;
+  color: white;
+  text-align-last: center; 
+}
+
+div{
+  background: #3d3b3b;
+  background-position: center;
+  size: 100px 50px;
+}
+
+</style>
+
+<div>
+<br>
+<h2>Add an eBook</h2>
+
+<form action="../CRUD/create.php" method="get">
+Creator: <input type="text"><br>
+Title: <input type="text"><br>
+Type: <input type="text"><br>
+Identifier: <input type="text"><br>
+Date: <input type="text"><br>
+Language: <input type="text"><br>
+Description: <input type="text"><br>
+<br>
+<input type="submit" value="Add Book">
+</form>
+<br>
+</div>
+
+<div>
+<br>
+
+<div>
+<br>
+<h2>Update an eBook</h2>
+
+<form action="../CRUD/update.php" method="get">
+ID: <input type="text"><br>
+Creator: <input type="text"><br>
+Title: <input type="text"><br>
+Type: <input type="text"><br>
+Identifier: <input type="text"><br>
+Date: <input type="text"><br>
+Language: <input type="text"><br>
+Description: <input type="text"><br>
+<br>
+<input type="submit" value="Update Book">
+</form>
+<br>
+</div>
+
+<div>
+<br>
+<h2>Delete Entry, by Identifier</h2>
+
+<form action="../CRUD/delete.php" method="get">
+Identifier: <input type="text"><br>
+<br>
+<input type="submit" value="Delete Book">
+</form>
+<br>
+</div>
+
+</body>
+
+</html>
